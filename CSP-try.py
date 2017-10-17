@@ -27,11 +27,13 @@ def hint2(student, color):
 '''
 FIXME
 Omar's design went somewhat farther than the silver airplane.
+This means he did not have the silver plane.
 '''
-def hint3(student, color, distance):
-    if(student == "Omar"):
+def hint3a(student, color, distance):
+    if(student == "Omar" and color == "silver"):
         return
     return student, color, distance
+
 
 '''
 FIXME
