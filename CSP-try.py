@@ -1,9 +1,10 @@
 from constraint import *
+
+#set-up problem
 problem = Problem()
 problem.addVariable("students", ["Ella", "Henrietta", "Omar", "Valerie"])
 problem.addVariable("colors", ["black", "blue", "pink", "silver"])
 problem.addVariable("distances", [15, 25, 35, 45])
-print len(problem.getSolutions())
 
 '''
 Henrietta's design went 35 feet
@@ -62,32 +63,57 @@ TODO: make sure that the final anwers are within 10 of eachother
 '''
 
 def hint5(color, distance):
+    #neither color can hold most extreme value
     if(color == "pink" and distance == 15):
         return
     if(color == "black" and distance == 45):
         return
     return True
 
+#pink is at most 10 feet further from farthest black plane
 def hint5b():
     maxBlackDist = 0
     for instance in problem.getSolutions():
-        if((instance.get("colors") == "silver") and (instance.get("distances") > maxSilverDist)):
-            maxSilverDist = instance.get("distances")
-    return maxSilverDist
+        if((instance.get("colors") == "black") and (instance.get("distances") > maxBlackDist)):
+            maxBlackDist = instance.get("distances")
+    return maxBlackDist
+
+#black is at most 10 feet less than pink
+def hint5c():
+    minPinkDist = 45
+    for instance in problem.getSolutions():
+        if(instance.get("colors") == "pink"):
+            minPinkDist = min(instance.get("distances"), minPinkDist)
+    return minPinkDist
+
+def hint5d(color, distance):
+    if(color == "pink" and distance > (blackMax + 10)):
+        return
+    if(color == "black" and distance < (pinkMin - 10)):
+        return
+    return True
 
 def main():
-    problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
-    print len(problem.getSolutions())
-    problem.addConstraint(FunctionConstraint(hint2), ["students", "colors"])
-    print len(problem.getSolutions())
-    problem.addConstraint(FunctionConstraint(hint3a), ["students", "colors", "distances"])
-    print len(problem.getSolutions())
-    problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
-    print len(problem.getSolutions())
-    problem.addConstraint(FunctionConstraint(hint5), ["colors", "distances"])
-    print len(problem.getSolutions())
 
-silverMax = hint3b()
-blackMax = hint5b()
+    problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
+    problem.addConstraint(FunctionConstraint(hint2), ["students", "colors"])
+    problem.addConstraint(FunctionConstraint(hint3a), ["students", "colors", "distances"])
+    silverMax = hint3b()
+    problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
+    problem.addConstraint(FunctionConstraint(hint5), ["colors", "distances"])
+    blackMax = hint5b()
+    pinkMin = hint5c()
+    problem.addConstraint(FunctionConstraint(hint5d), ["colors", "distances"])
+
+
+
+    print len(problem.getSolutions())
+    print problem.getSolutions()
+
+#set global variables
+silverMax = 0
+blackMax = 0
+pinkMin = 45
+
 if (__name__ == "__main__"):
     main()
