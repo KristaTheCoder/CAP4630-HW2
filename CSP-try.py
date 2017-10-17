@@ -40,6 +40,7 @@ def hint3a(student, color, distance):
         return False
     return True
 
+#Run recursive until down to 4 solutions
 def hint3b():
     #find max distance
     maxSilverDist = 0
@@ -55,15 +56,16 @@ def hint3c(student, distance):
     return True
 '''
 Ella's design went 10 feet farther than the black plane
-TODO account for distance portion
 '''
 def hint4(student, color, distance):
     ## Ella's plane is not the black plane
     if (student == "Ella" and color == "black"):
-        return
+        return False
     #Ella's plane is not the slowest plane
-    if (student == "Ella" and distance != 15):
-        return
+    if (student == "Ella" and distance == 15):
+        return False
+    if(color == "black" and distance == 45):
+        return False
     return True
 
 '''
@@ -91,10 +93,6 @@ def main():
     problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
     problem.addConstraint(FunctionConstraint(hint4), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint5), ["colors", "distances"])
-    print len(problem.getSolutions())
-    for answer in problem.getSolutions():
-        print answer
-    print " "
 
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
