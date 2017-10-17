@@ -13,7 +13,7 @@ def hint1(student, distance):
         return
     if(student != "Henrietta" and distance == 35):
         return
-    return student, distance
+    return True
 '''
 Henrietta's deisgn was silver
 '''
@@ -22,17 +22,37 @@ def hint2(student, color):
         return
     if(student != "Henrietta" and color == "silver"):
         return
-    return student, color
+    return True
 
 '''
 FIXME
 Omar's design went somewhat farther than the silver airplane.
-This means he did not have the silver plane.
 '''
 def hint3a(student, color, distance):
+    #Omar does not have the silver plane
     if(student == "Omar" and color == "silver"):
         return
-    return student, color, distance
+    #Silver plane cannot be the farthest
+    if(color == "silver" and distance == 45):
+        return
+    #Omar's plane is not the shortest
+    if(student == "Omar" and distance == 15):
+        return
+    return True
+
+def hint3b():
+    #find max distance
+    maxSilverDist = 0
+    for instance in problem.getSolutions():
+        if((instance.get("colors") == "silver") and (instance.get("distances") > maxSilverDist)):
+            maxSilverDist = instance.get("distances")
+    return maxSilverDist
+
+#find all distances ahead of silver plane
+def hint3c(student, distance):
+    if(student == "Omar" and distance <= silverMax):
+        return
+    return True
 
 
 '''
@@ -40,24 +60,34 @@ FIXME
 The pink plane went 10 feet further than the black plane
 TODO: make sure that the final anwers are within 10 of eachother
 '''
-#try preprocessing need to figure out how to check all other in set
+
 def hint5(color, distance):
     if(color == "pink" and distance == 15):
         return
     if(color == "black" and distance == 45):
         return
-    return color, distance
+    return True
 
+def hint5b():
+    maxBlackDist = 0
+    for instance in problem.getSolutions():
+        if((instance.get("colors") == "silver") and (instance.get("distances") > maxSilverDist)):
+            maxSilverDist = instance.get("distances")
+    return maxSilverDist
 
-problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
-#Check that hint 1 constraints are working
-print len(problem.getSolutions())
+def main():
+    problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
+    print len(problem.getSolutions())
+    problem.addConstraint(FunctionConstraint(hint2), ["students", "colors"])
+    print len(problem.getSolutions())
+    problem.addConstraint(FunctionConstraint(hint3a), ["students", "colors", "distances"])
+    print len(problem.getSolutions())
+    problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
+    print len(problem.getSolutions())
+    problem.addConstraint(FunctionConstraint(hint5), ["colors", "distances"])
+    print len(problem.getSolutions())
 
-#check that hint2 constraints are working
-problem.addConstraint(FunctionConstraint(hint2), ["students", "colors"])
-print len(problem.getSolutions())
-
-
-#check that hint5 constraint is working.
-problem.addConstraint(FunctionConstraint(hint5), ["colors", "distances"])
-print len(problem.getSolutions())
+silverMax = hint3b()
+blackMax = hint5b()
+if (__name__ == "__main__"):
+    main()
