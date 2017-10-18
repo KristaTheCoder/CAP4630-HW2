@@ -1,11 +1,8 @@
 from constraint import *
-import numpy
 
 #set-up problem
-problem = Problem()
-problem.addVariable("students", ["Ella", "Henrietta", "Omar", "Valerie"])
-problem.addVariable("colors", ["black", "blue", "pink", "silver"])
-problem.addVariable("distances", [15, 25, 35, 45])
+
+
 
 '''
 Henrietta's design went 35 feet
@@ -41,20 +38,7 @@ def hint3a(student, color, distance):
         return False
     return True
 
-#Run recursive until down to 4 solutions
-def sMax():
-    maxSilverDist = 0
-    for instance in problem.getSolutions():
-        if((instance.get("colors") == "silver") and (instance.get("distances") > maxSilverDist)):
-            maxSilverDist = instance.get("distances")
-    return maxSilverDist
 
-#find all distances ahead of silver plane
-def hint3c(student, distance):
-    global silverMax
-    if(student == "Omar" and distance <= silverMax):
-        return False
-    return True
 '''
 Ella's design went 10 feet farther than the black plane
 '''
@@ -86,14 +70,6 @@ def hint5(student, color, distance):
         return False
     return True
 
-#Ella's distances:
-def ellaDistances():
-    global ellaD
-    for instance in problem.getSolutions():
-        if(instance["students"] == "Ella"):
-            ellaD.insert(0, instance["distances"])
-
-
 #filter black based on ella
 def hint5a(color, distance):
     global ellaD
@@ -106,29 +82,55 @@ def hint5a(color, distance):
 
 
 def main():
+
+    print "main"
+    problem = Problem()
+    students = ["Ella", "Henrietta", "Omar", "Valerie"]
+    colors = ["black", "blue", "pink", "silver"]
+    distances = [15, 25, 35, 45]
+    problem.addVariable("students", students)
+    problem.addVariable("colors", colors)
+    problem.addVariable("distances", distances)
+
     problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
     problem.addConstraint(FunctionConstraint(hint2), ["students", "colors"])
     problem.addConstraint(FunctionConstraint(hint3a), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint4), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint5), ["students", "colors", "distances"])
     problem.addConstraint(AllDifferentConstraint())
-    #Greater than silver constraint
-    global silverMax
-    silverMax = sMax()
-    problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
 
-    global ellaD
-    ellaDistances()
-    problem.addConstraint(FunctionConstraint(hint5a), ["colors", "distances"])
+    #pink is 10 more than black
+    for pink in problem.getSolutions():
+        if(pink["colors"] == "pink"):
+            possiblePink = False
+            for black in problem.getSolutions():
+                if(black["colors"] == "black"):
+                    if(pink["distances"] - black["distances"] == 10):
+                        possiblePink == True
+            if( not possiblePink):
+                problem.addConstraint(lambda a, b: not(a != pink["distances"] and b == pink["colors"]), ("distances", "colors"))
 
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
-        print answer
+         print answer.items()
+    #black is 10 less than pink
+    print 
+    for black in problem.getSolutions():
+        print black
+        if(black["colors"] == "black"):
+            possibleBlack = False
+            for pink in problem.getSolutions():
+                if(pink["colors"] == "pink"):
+                    print pink
+                    if(pink["distances"] - black["distances"] == 10):
+                        possibleBlack == True
+            if(not possibleBlack):
+                problem.addConstraint(lambda a, b: not(a == black["distances"] and b == black["colors"]), ("distances", "colors"))
+    #
+    # print len(problem.getSolutions())
+    # for answer in problem.getSolutions():
+    #     print answer.items()
 
 
-#set global variables
-silverMax = 0
-ellaD = []
-blackBack = []
 if (__name__ == "__main__"):
     main()
