@@ -66,7 +66,10 @@ def hint5(student, color, distance):
         return False
     return True
 
-def whereElla(distance0, color, distance):
+'''
+We know Ella is 10 more than the black plane
+'''
+def hint5a(distance0, color, distance):
      if(color == "black"):
          if(distance0 - distance == 10):
              return True
@@ -74,7 +77,9 @@ def whereElla(distance0, color, distance):
      else:
          return True
 
-
+'''
+Prints final set of answers for the CSP
+'''
 def answer_set(x):
     Ella = []
     Henrietta = []
@@ -116,7 +121,7 @@ def main():
 
     #check within 10 of eachother
     for i in range(len(colors)):
-        problem.addConstraint(FunctionConstraint(whereElla), ["distances0", "colors" + str(i), "distances" + str(i)])
+        problem.addConstraint(FunctionConstraint(hint5a), ["distances0", "colors" + str(i), "distances" + str(i)])
 
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
