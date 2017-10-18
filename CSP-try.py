@@ -112,25 +112,22 @@ def main():
 
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
-         print answer.items()
+        print answer.items()
     #black is 10 less than pink
-    print 
-    for black in problem.getSolutions():
-        print black
-        if(black["colors"] == "black"):
+
+    for black1 in problem.getSolutions():
+        if(black1["colors"] == "black"):
             possibleBlack = False
-            for pink in problem.getSolutions():
-                if(pink["colors"] == "pink"):
-                    print pink
-                    if(pink["distances"] - black["distances"] == 10):
+            for pink1 in problem.getSolutions():
+                if(pink1["colors"] == "pink"):
+                    if(pink1["distances"] - black1["distances"] == 10):
                         possibleBlack == True
             if(not possibleBlack):
-                problem.addConstraint(lambda a, b: not(a == black["distances"] and b == black["colors"]), ("distances", "colors"))
-    #
-    # print len(problem.getSolutions())
-    # for answer in problem.getSolutions():
-    #     print answer.items()
+                problem.addConstraint(lambda a, b: not(a == black1["distances"] and b == black1["colors"]), ("distances", "colors"))
 
+    print len(problem.getSolutions())
+    for answer in problem.getSolutions():
+        print answer.items()
 
 if (__name__ == "__main__"):
     main()
