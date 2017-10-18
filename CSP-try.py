@@ -1,4 +1,5 @@
 from constraint import *
+import numpy
 
 #set-up problem
 problem = Problem()
@@ -41,8 +42,7 @@ def hint3a(student, color, distance):
     return True
 
 #Run recursive until down to 4 solutions
-def hint3b():
-    #find max distance
+def sMax():
     maxSilverDist = 0
     for instance in problem.getSolutions():
         if((instance.get("colors") == "silver") and (instance.get("distances") > maxSilverDist)):
@@ -68,6 +68,25 @@ def hint4(student, color, distance):
         return False
     return True
 
+#Find all lengths of black plane
+def blackPlane():
+    blackDist1 = []
+    for instance in problem.getSolutions():
+        if (instance.get("color") == "black"):
+            if (instance.get("distance") not in blackDist1):
+                blackDist1.append(instance.get("distance"))
+    bd = numpy.array(blackDist1)
+    bd = bd + 10
+    return bd
+
+#Can only be plus 10 more
+def hint4a(student, distance):
+    if(student == "Ella" and distance not in blackDist):
+        return False
+    return True
+
+
+
 '''
 FIXME
 The pink plane went 10 feet further than the black plane
@@ -89,8 +108,6 @@ def main():
     problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
     problem.addConstraint(FunctionConstraint(hint2), ["students", "colors"])
     problem.addConstraint(FunctionConstraint(hint3a), ["students", "colors", "distances"])
-    silverMax = hint3b()
-    problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
     problem.addConstraint(FunctionConstraint(hint4), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint5), ["colors", "distances"])
 
@@ -98,10 +115,21 @@ def main():
     for answer in problem.getSolutions():
         print answer
 
+    silverMax = sMax()
+    problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
+    blackDist = blackPlane()
+    problem.addConstraint(FunctionConstraint(hint4a), ["students", "distances"])
+    
+    print len(problem.getSolutions())
+    for answer in problem.getSolutions():
+        print answer
+
+
 #set global variables
 silverMax = 0
 blackMax = 0
 pinkMin = 45
+blackDist = []
 
 if (__name__ == "__main__"):
     main()
