@@ -47,7 +47,6 @@ def sMax():
     for instance in problem.getSolutions():
         if((instance.get("colors") == "silver") and (instance.get("distances") > maxSilverDist)):
             maxSilverDist = instance.get("distances")
-            print maxSilverDist
     return maxSilverDist
 
 #find all distances ahead of silver plane
@@ -87,6 +86,24 @@ def hint5(student, color, distance):
         return False
     return True
 
+#Ella's distances:
+def ellaDistances():
+    global ellaD
+    for instance in problem.getSolutions():
+        if(instance["students"] == "Ella"):
+            ellaD.insert(0, instance["distances"])
+
+
+#filter black based on ella
+def hint5a(color, distance):
+    global ellaD
+    if(color == "black"):
+        if(distance + 10  in ellaD):
+            return True
+        else:
+             return False
+    return True
+
 
 def main():
     problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
@@ -95,13 +112,14 @@ def main():
     problem.addConstraint(FunctionConstraint(hint4), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint5), ["students", "colors", "distances"])
 
-    print len(problem.getSolutions())
-    for answer in problem.getSolutions():
-        print answer
-
+    #Greater than silver constraint
     global silverMax
     silverMax = sMax()
     problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
+
+    global ellaD
+    ellaDistances()
+    problem.addConstraint(FunctionConstraint(hint5a), ["colors", "distances"])
 
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
@@ -110,6 +128,7 @@ def main():
 
 #set global variables
 silverMax = 0
-
+ellaD = []
+blackBack = []
 if (__name__ == "__main__"):
     main()
