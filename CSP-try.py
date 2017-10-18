@@ -111,7 +111,7 @@ def main():
     problem.addConstraint(FunctionConstraint(hint3a), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint4), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint5), ["students", "colors", "distances"])
-
+    problem.addConstraint(AllDifferentConstraint())
     #Greater than silver constraint
     global silverMax
     silverMax = sMax()
