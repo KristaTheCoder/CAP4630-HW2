@@ -3,9 +3,26 @@ import numpy
 
 #set-up problem
 problem = Problem()
-problem.addVariable("students", ["Ella", "Henrietta", "Omar", "Valerie"])
-problem.addVariable("colors", ["black", "blue", "pink", "silver"])
-problem.addVariable("distances", [15, 25, 35, 45])
+students = ["Ella", "Henrietta", "Omar", "Valerie"]
+colors = ["black", "blue", "pink", "silver"]
+distances= [ 15, 25, 35, 45]
+problem.addVariables(["students","colors", "distances"], ["Ella", "Henrietta", "Omar", "Valerie", "black", "blue", "pink", "silver", 15, 25, 35, 45])
+problem.addConstraint(AllDifferentConstraint())
+def exclusive(student, color, distance):
+    global students, colors, distances
+    if student in colors:
+        return False
+    if student in distances:
+        return False
+    if color in students:
+        return False
+    if color in distances:
+        return False
+    if distance in students:
+        return False
+    if distance in colors:
+        return False
+    return True
 
 '''
 Henrietta's design went 35 feet
@@ -106,20 +123,15 @@ def hint5a(color, distance):
 
 
 def main():
+    problem.addConstraint(FunctionConstraint(exclusive), ["students", "colors", "distances"])
+    print len(problem.getSolutions())
     problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
     problem.addConstraint(FunctionConstraint(hint2), ["students", "colors"])
     problem.addConstraint(FunctionConstraint(hint3a), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint4), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint5), ["students", "colors", "distances"])
-    problem.addConstraint(AllDifferentConstraint())
-    #Greater than silver constraint
-    global silverMax
-    silverMax = sMax()
-    problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
 
-    global ellaD
-    ellaDistances()
-    problem.addConstraint(FunctionConstraint(hint5a), ["colors", "distances"])
+    problem.addConstraint(AllDifferentConstraint())
 
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
