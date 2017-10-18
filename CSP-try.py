@@ -66,8 +66,32 @@ def hint5(student, color, distance):
         return False
     return True
 
+def whereElla(distance0, color, distance):
+     if(color == "black"):
+         if(distance0 - distance == 10):
+             return True
+         return False
+     else:
+         return True
 
 
+def answer_set(x):
+    Ella = []
+    Henrietta = []
+    Omar = []
+    Valerie = []
+    answer_list = [Ella, Henrietta, Omar, Valerie]
+    for a in x:
+        if a[-1] == "0":
+            Ella.append(x[a])
+        if a[-1] == "1":
+            Henrietta.append(x[a])
+        if a[-1] == "2":
+            Omar.append(x[a])
+        if a[-1] in "3":
+            Valerie.append(x[a])
+    for person in answer_list:
+        print person
 def main():
 
     problem = Problem()
@@ -90,41 +114,13 @@ def main():
         problem.addConstraint(FunctionConstraint(hint4), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
         problem.addConstraint(FunctionConstraint(hint5), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
 
-    #
-    # #pink is 10 more than black
-    # for pink in problem.getSolutions():
-    #     if(pink["colors"] == "pink"):
-    #         possiblePink = False
-    #         for black in problem.getSolutions():
-    #             if(black["colors"] == "black"):
-    #                 if(pink["distances"] - black["distances"] == 10):
-    #                     possiblePink == True
-    #         if( not possiblePink):
-    #             problem.addConstraint(lambda a, b: not(a != pink["distances"] and b == pink["colors"]), ("distances", "colors"))
-    #
-    # print len(problem.getSolutions())
-    # for answer in problem.getSolutions():
-    #     print answer.items()
-    # #black is 10 less than pink
-    #
-    # for black1 in problem.getSolutions():
-    #     if(black1["colors"] == "black"):
-    #         possibleBlack = False
-    #         for pink1 in problem.getSolutions():
-    #             if(pink1["colors"] == "pink"):
-    #                 if(pink1["distances"] - black1["distances"] == 10):
-    #                     possibleBlack == True
-    #         if(not possibleBlack):
-    #             problem.addConstraint(lambda a, b: not(a == black1["distances"] and b == black1["colors"]), ("distances", "colors"))
-    #
+    #check within 10 of eachother
+    for i in range(len(colors)):
+        problem.addConstraint(FunctionConstraint(whereElla), ["distances0", "colors" + str(i), "distances" + str(i)])
 
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
-        for key, value in sorted(answer.iteritems(), key=lambda (k,v): (v,k)):
-            print "%s: %s" % (value, key)
-
-
-
+        answer_set(answer)
 
 
 if (__name__ == "__main__"):
