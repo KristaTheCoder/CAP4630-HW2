@@ -47,10 +47,12 @@ def sMax():
     for instance in problem.getSolutions():
         if((instance.get("colors") == "silver") and (instance.get("distances") > maxSilverDist)):
             maxSilverDist = instance.get("distances")
+            print maxSilverDist
     return maxSilverDist
 
 #find all distances ahead of silver plane
 def hint3c(student, distance):
+    global silverMax
     if(student == "Omar" and distance <= silverMax):
         return False
     return True
@@ -65,23 +67,6 @@ def hint4(student, color, distance):
     if (student == "Ella" and distance == 15):
         return False
     if(color == "black" and distance == 45):
-        return False
-    return True
-
-#Find all lengths of black plane
-def blackPlane():
-    blackDist1 = []
-    for instance in problem.getSolutions():
-        if (instance.get("color") == "black"):
-            if (instance.get("distance") not in blackDist1):
-                blackDist1.append(instance.get("distance"))
-    bd = numpy.array(blackDist1)
-    bd = bd + 10
-    return bd
-
-#Can only be plus 10 more
-def hint4a(student, distance):
-    if(student == "Ella" and distance not in blackDist):
         return False
     return True
 
@@ -103,10 +88,7 @@ def hint5(student, color, distance):
     return True
 
 
-
-
 def main():
-
     problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
     problem.addConstraint(FunctionConstraint(hint2), ["students", "colors"])
     problem.addConstraint(FunctionConstraint(hint3a), ["students", "colors", "distances"])
@@ -117,12 +99,10 @@ def main():
     for answer in problem.getSolutions():
         print answer
 
-    '''
+    global silverMax
     silverMax = sMax()
     problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
-    blackDist = blackPlane()
-    problem.addConstraint(FunctionConstraint(hint4a), ["students", "distances"])
-    '''
+
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
         print answer
@@ -130,9 +110,6 @@ def main():
 
 #set global variables
 silverMax = 0
-blackMax = 0
-pinkMin = 45
-blackDist = []
 
 if (__name__ == "__main__"):
     main()
