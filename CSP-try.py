@@ -85,15 +85,16 @@ def hint4a(student, distance):
         return False
     return True
 
-
-
 '''
-FIXME
 The pink plane went 10 feet further than the black plane
-TODO: make sure that the final anwers are within 10 of eachother
 '''
 
-def hint5(color, distance):
+def hint5(student, color, distance):
+    #Ella's plane when 10 feet further than black plane so Ella's is pink
+    if(student == "Ella" and color != "pink"):
+        return False
+    if(student != "Ella" and color == "pink"):
+        return False
     #neither color can hold most extreme value
     if(color == "pink" and distance == 15):
         return False
@@ -103,23 +104,25 @@ def hint5(color, distance):
 
 
 
+
 def main():
 
     problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
     problem.addConstraint(FunctionConstraint(hint2), ["students", "colors"])
     problem.addConstraint(FunctionConstraint(hint3a), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint4), ["students", "colors", "distances"])
-    problem.addConstraint(FunctionConstraint(hint5), ["colors", "distances"])
+    problem.addConstraint(FunctionConstraint(hint5), ["students", "colors", "distances"])
 
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
         print answer
 
+    '''
     silverMax = sMax()
     problem.addConstraint(FunctionConstraint(hint3c), ["students", "distances"])
     blackDist = blackPlane()
     problem.addConstraint(FunctionConstraint(hint4a), ["students", "distances"])
-    
+    '''
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
         print answer
