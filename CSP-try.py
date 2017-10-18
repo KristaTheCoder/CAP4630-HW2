@@ -85,19 +85,18 @@ def main():
 
     print "main"
     problem = Problem()
-    students = ["Ella", "Henrietta", "Omar", "Valerie"]
-    colors = ["black", "blue", "pink", "silver"]
-    distances = [15, 25, 35, 45]
-    problem.addVariable("students", students)
-    problem.addVariable("colors", colors)
-    problem.addVariable("distances", distances)
+    students1 = ["Ella", "Henrietta", "Omar", "Valerie"]
+    colors1 = ["black", "blue", "pink", "silver"]
+    distances1 = [15, 25, 35, 45]
+    problem.addVariable("students", students1)
+    problem.addVariable("colors", colors1)
+    problem.addVariable("distances", distances1)
 
     problem.addConstraint(FunctionConstraint(hint1), ["students", "distances"])
     problem.addConstraint(FunctionConstraint(hint2), ["students", "colors"])
     problem.addConstraint(FunctionConstraint(hint3a), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint4), ["students", "colors", "distances"])
     problem.addConstraint(FunctionConstraint(hint5), ["students", "colors", "distances"])
-    problem.addConstraint(AllDifferentConstraint())
 
     #pink is 10 more than black
     for pink in problem.getSolutions():
@@ -125,9 +124,17 @@ def main():
             if(not possibleBlack):
                 problem.addConstraint(lambda a, b: not(a == black1["distances"] and b == black1["colors"]), ("distances", "colors"))
 
+    problem.addConstraint(AllDifferentConstraint())
+
     print len(problem.getSolutions())
     for answer in problem.getSolutions():
-        print answer.items()
+        print answer
+
+    #need all different between possible sets
+
+
+
+
 
 if (__name__ == "__main__"):
     main()
