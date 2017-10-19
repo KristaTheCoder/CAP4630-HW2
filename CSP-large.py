@@ -20,17 +20,15 @@ def hint2(boat, location, manatee, WPboat_manatees):
     return True
 
 '''
-Omar's design went somewhat farther than the silver airplane.
+The Boat that went to Rainbow Reef, Captain Yang's boat, and the Samantha are three different boats
 '''
-def hint3a(student, color, distance):
-    #Omar does not have the silver plane
-    if(student == "Omar" and color == "silver"):
+def hint3(boat, location, captain):
+    #They are all mutually exlusive
+    if(boat == "Samantha" and (location == "Rainbow Reef" or captain == "Yang")):
         return False
-    #Silver plane cannot be the farthest
-    if(color == "silver" and distance == 45):
+    if(location == "Rainbow Reef" and (boat == "Samantha" or captain == "Yang")):
         return False
-    #Omar's plane is not the shortest
-    if(student == "Omar" and distance == 15):
+    if(captain == "Yang" and (boat == "Samantha" or location == "Rainbow Reef")):
         return False
     return True
 
@@ -120,7 +118,7 @@ def main():
     for i in range(len(boats)):
         problem.addConstraint(FunctionConstraint(hint1), ["boats" + str(i), "locations" + str(i), "captains" + str(i)])
         problem.addConstraint(FunctionConstraint(hint2), ["boats" + str(i), "locations" + str(i), "manatees" + str(i), "manatees3"])
-        # problem.addConstraint(FunctionConstraint(hint3a), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
+        problem.addConstraint(FunctionConstraint(hint3), ["boats" + str(i), "locations" + str(i), "captains" + str(i)])
         # problem.addConstraint(FunctionConstraint(hint4), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
         # problem.addConstraint(FunctionConstraint(hint5), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
 
