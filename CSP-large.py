@@ -96,22 +96,23 @@ def hint8(boat, location):
 Prints final set of answers for the CSP
 '''
 def answer_set(x):
-    Ella = []
-    Henrietta = []
-    Omar = []
-    Valerie = []
-    answer_list = [Ella, Henrietta, Omar, Valerie]
+    Daily_Ray = []
+    Foxy_Roxy = []
+    Samantha = []
+    Watery_Pete = []
+    answer_list = [Daily_Ray, Foxy_Roxy, Samantha, Watery_Pete]
     for a in x:
         if a[-1] == "0":
-            Ella.append(x[a])
+            Daily_Ray.append(x[a])
         if a[-1] == "1":
-            Henrietta.append(x[a])
+            Foxy_Roxy.append(x[a])
         if a[-1] == "2":
-            Omar.append(x[a])
+            Samantha.append(x[a])
         if a[-1] in "3":
-            Valerie.append(x[a])
-    for person in answer_list:
-        print person
+            Watery_Pete.append(x[a])
+    for boat in answer_list:
+        print boat
+
 def main():
 
     problem = Problem()
@@ -143,13 +144,10 @@ def main():
         #We know foxy roxy sub set ends in 1
         problem.addConstraint(FunctionConstraint(hint7), ["boats" + str(i), "locations" + str(i), "manatees" + str(i), "captains" + str(i), "boats1", "manatees1", "captains1"])
         problem.addConstraint(FunctionConstraint(hint8), ["boats" + str(i), "locations" + str(i)])
-    #check within 10 of eachother
-    # for i in range(len(colors)):
-    #     problem.addConstraint(FunctionConstraint(hint5a), ["distances0", "colors" + str(i), "distances" + str(i)])
 
-    print len(problem.getSolutions())
-    # for answer in problem.getSolutions():
-    #     answer_set(answer)
+    print "Number of Solutions: ", len(problem.getSolutions())
+    for answer in problem.getSolutions():
+        answer_set(answer)
 
 
 if (__name__ == "__main__"):
