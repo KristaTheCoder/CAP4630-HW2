@@ -62,6 +62,22 @@ def hint6(boat, manatee, captain):
      return True
 
 '''
+Of the Foxy Roxy and the vessel that went to Betty Beach, one saw 3 manatees and the other was lead by Captain Armstrong
+'''
+def hint7(boat, location, manatee, captain, FR, manateeFR, CapFR):
+    #Foxy Roxy did not go to betty Beach
+    if(boat == "Foxy Roxy" and location == "Betty Beach"):
+        return False
+    #Foxy Roxy has to have at least one of these true in set
+    if(not(manateeFR == 3 or CapFR == "Armstrong")):
+        return False
+    if(location == "Betty Beach"):
+        #at least one has to be true
+        #since we already passed Foxy Roxy condition and answers are unique just check if it has one
+        if(not(manatee == 3 or captain == "Armstrong")):
+            return False
+    return True
+'''
 Prints final set of answers for the CSP
 '''
 def answer_set(x):
@@ -108,6 +124,8 @@ def main():
         # problem.addConstraint(FunctionConstraint(hint4), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
         problem.addConstraint(FunctionConstraint(hint5), ["locations" + str(i), "manatees" + str(i)])
         problem.addConstraint(FunctionConstraint(hint6), ["boats" + str(i), "manatees" + str(i), "captains" + str(i)])
+        #We know foxy roxy sub set ends in 1
+        problem.addConstraint(FunctionConstraint(hint7), ["boats" + str(i), "locations" + str(i), "manatees" + str(i), "captains" + str(i), "boats1", "manatees1", "captains1"])
     #check within 10 of eachother
     # for i in range(len(colors)):
     #     problem.addConstraint(FunctionConstraint(hint5a), ["distances0", "colors" + str(i), "distances" + str(i)])
