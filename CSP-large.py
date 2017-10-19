@@ -7,13 +7,16 @@ def hint1(boat, location, captain):
         return False
     return True
 '''
-Henrietta's deisgn wa
+The vessel that went to Rainbow Reef saw fewer manatees than the Watery Pete
 '''
-def hint2(student, color):
-    if(student == "Henrietta" and color != "silver"):
-        return False
-    if(student != "Henrietta" and color == "silver"):
-        return False
+def hint2(boat, location, manatee, WPboat_manatees):
+    if(location == "Rainbow Reef"):
+        #The watery pete did not go to rainbow reef
+        if(boat == "Watery Pete"):
+            return False
+        #we Know WP is #3
+        if(manatee >= WPboat_manatees):
+            return False
     return True
 
 '''
@@ -116,7 +119,7 @@ def main():
     #FIXME: change for new problem all below
     for i in range(len(boats)):
         problem.addConstraint(FunctionConstraint(hint1), ["boats" + str(i), "locations" + str(i), "captains" + str(i)])
-        # problem.addConstraint(FunctionConstraint(hint2), ["students" + str(i), "colors" + str(i)])
+        problem.addConstraint(FunctionConstraint(hint2), ["boats" + str(i), "locations" + str(i), "manatees" + str(i), "manatees3"])
         # problem.addConstraint(FunctionConstraint(hint3a), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
         # problem.addConstraint(FunctionConstraint(hint4), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
         # problem.addConstraint(FunctionConstraint(hint5), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
