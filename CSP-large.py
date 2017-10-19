@@ -34,33 +34,19 @@ def hint3(boat, location, captain):
 
 
 '''
-Ella's design went 10 feet farther than the black plane
+The vessel that went to Betty Beach saw 2 more manatees than the boat that went to Rainbow Reef
 '''
 def hint4(student, color, distance):
-    ## Ella's plane is not the black plane
-    if (student == "Ella" and color == "black"):
-        return False
-    #Ella's plane is not the slowest plane
-    if (student == "Ella" and distance == 15):
-        return False
-    if(color == "black" and distance == 45):
-        return False
+    # try making a set intersection later come back to this
+
     return True
 
 '''
-The pink plane went 10 feet further than the black plane
+The vessel that saw 5 manatees didn't go to Arno's Spit
 '''
-
-def hint5(student, color, distance):
+def hint5(location, manatee):
     #Ella's plane when 10 feet further than black plane so Ella's is pink
-    if(student == "Ella" and color != "pink"):
-        return False
-    if(student != "Ella" and color == "pink"):
-        return False
-    #neither color can hold most extreme value
-    if(color == "pink" and distance == 15):
-        return False
-    if(color == "black" and distance == 45):
+    if(manatee == 5 and location == "Arno's Spit"):
         return False
     return True
 
@@ -120,7 +106,7 @@ def main():
         problem.addConstraint(FunctionConstraint(hint2), ["boats" + str(i), "locations" + str(i), "manatees" + str(i), "manatees3"])
         problem.addConstraint(FunctionConstraint(hint3), ["boats" + str(i), "locations" + str(i), "captains" + str(i)])
         # problem.addConstraint(FunctionConstraint(hint4), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
-        # problem.addConstraint(FunctionConstraint(hint5), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
+        problem.addConstraint(FunctionConstraint(hint5), ["locations" + str(i), "manatees" + str(i)])
 
     #check within 10 of eachother
     # for i in range(len(colors)):
