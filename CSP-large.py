@@ -51,15 +51,15 @@ def hint5(location, manatee):
     return True
 
 '''
-We know Ella is 10 more than the black plane
+The boat that saw 3 manatees is either Captain Yang's boat or the Samantha
 '''
-def hint5a(distance0, color, distance):
-     if(color == "black"):
-         if(distance0 - distance == 10):
+def hint6(boat, manatee, captain):
+     if(manatee == 3):
+         #One or the other
+         if((captain == "Yang") != (boat == "Samantha")):
              return True
          return False
-     else:
-         return True
+     return True
 
 '''
 Prints final set of answers for the CSP
@@ -107,7 +107,7 @@ def main():
         problem.addConstraint(FunctionConstraint(hint3), ["boats" + str(i), "locations" + str(i), "captains" + str(i)])
         # problem.addConstraint(FunctionConstraint(hint4), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
         problem.addConstraint(FunctionConstraint(hint5), ["locations" + str(i), "manatees" + str(i)])
-
+        problem.addConstraint(FunctionConstraint(hint6), ["boats" + str(i), "manatees" + str(i), "captains" + str(i)])
     #check within 10 of eachother
     # for i in range(len(colors)):
     #     problem.addConstraint(FunctionConstraint(hint5a), ["distances0", "colors" + str(i), "distances" + str(i)])
