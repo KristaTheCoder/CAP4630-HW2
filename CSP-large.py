@@ -77,6 +77,17 @@ def hint7(boat, location, manatee, captain, FR, manateeFR, CapFR):
         if(not(manatee == 3 or captain == "Armstrong")):
             return False
     return True
+
+'''
+The Samantha went to Betty Beach
+'''
+def hint8(boat, location):
+    if(boat == "Samantha" and location != "Betty Beach"):
+        return False
+    if(boat != "Samantha" and location == "Betty Beach"):
+        return False
+    return True
+
 '''
 Prints final set of answers for the CSP
 '''
@@ -126,6 +137,7 @@ def main():
         problem.addConstraint(FunctionConstraint(hint6), ["boats" + str(i), "manatees" + str(i), "captains" + str(i)])
         #We know foxy roxy sub set ends in 1
         problem.addConstraint(FunctionConstraint(hint7), ["boats" + str(i), "locations" + str(i), "manatees" + str(i), "captains" + str(i), "boats1", "manatees1", "captains1"])
+        problem.addConstraint(FunctionConstraint(hint8), ["boats" + str(i), "locations" + str(i)])
     #check within 10 of eachother
     # for i in range(len(colors)):
     #     problem.addConstraint(FunctionConstraint(hint5a), ["distances0", "colors" + str(i), "distances" + str(i)])
