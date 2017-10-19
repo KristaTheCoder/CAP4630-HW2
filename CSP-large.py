@@ -36,9 +36,13 @@ def hint3(boat, location, captain):
 '''
 The vessel that went to Betty Beach saw 2 more manatees than the boat that went to Rainbow Reef
 '''
-def hint4(student, color, distance):
-    # try making a set intersection later come back to this
-
+def hint4(location1, location2, manatee1, manatee2):
+    if(location1 == "Betty Beach" and location2 == "Rainbow Reef"):
+        if(manatee1 - manatee2 != 2):
+            return False
+    elif(location1 == "Rainbow Reef" and location2 == "Betty Beach"):
+        if(manatee2 - manatee1 != 2):
+            return False
     return True
 
 '''
@@ -132,7 +136,8 @@ def main():
         problem.addConstraint(FunctionConstraint(hint1), ["boats" + str(i), "locations" + str(i), "captains" + str(i)])
         problem.addConstraint(FunctionConstraint(hint2), ["boats" + str(i), "locations" + str(i), "manatees" + str(i), "manatees3"])
         problem.addConstraint(FunctionConstraint(hint3), ["boats" + str(i), "locations" + str(i), "captains" + str(i)])
-        # problem.addConstraint(FunctionConstraint(hint4), ["students" + str(i), "colors" + str(i), "distances" + str(i)])
+        for j in range(len(boats)):
+            problem.addConstraint(FunctionConstraint(hint4), ["locations" + str(i), "locations" + str(j), "manatees" + str(i), "manatees" + str(j)])
         problem.addConstraint(FunctionConstraint(hint5), ["locations" + str(i), "manatees" + str(i)])
         problem.addConstraint(FunctionConstraint(hint6), ["boats" + str(i), "manatees" + str(i), "captains" + str(i)])
         #We know foxy roxy sub set ends in 1
