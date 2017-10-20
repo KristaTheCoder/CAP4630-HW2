@@ -47,8 +47,9 @@ def problem2():
     prob += boats["Watery Pete"] >= (locations["Rainbow Reef"] + 1)
     #The boat that went to Rainbow Reef, Captain Yang's boat, and the Samantha are three different boats
     prob += locations["Rainbow Reef"] != captains["Yang"]
-    prob += locations["Rainbow Reef"] != boats["Samantha"]
+
     prob += boats["Samantha"] != captains["Yang"]
+    prob += locations["Rainbow Reef"] != boats["Samantha"]
     print len(prob.variables())
 
     prob.solve()
