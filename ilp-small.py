@@ -2,20 +2,11 @@ from pulp import *
 
 prob = pulp.LpProblem("test1", pulp.LpMinimize)
 
-#create 3D array, possible values are -1, not available = 0, answer is 1
-
+#possible values are 1 impossible are 0
 students = ["Ella", "Henrietta", "Omar", "Valerie"]
 colors = ["black", "blue", "pink", "silver"]
-distances = [15, 25, 35, 45]
+distances = ["15","25", "35", "45"]
 
-    #  The boxes list is created, with the row and column index of each square in each box
-    #Create 3D box of possible answers
-# Squares =[]
-# for i in range(len(students)):
-#     for j in range(len(colors)):
-#         for k in range(len(distances)):
-#             #intialize coordinates of boxes in 3D array
-#             Squares += [[(4*i+m,4*j+l, 4*k+ n) for m in range(4) for l in range(4) for n in range(4)]]
 
 Boxes =[]
 for student in students:
@@ -23,5 +14,42 @@ for student in students:
         for distance in distances:
             #intialize coordinates of boxes in 3D array
             Boxes += [[(student,color, distance)]]
-            
+
+# 3D array of all possible options
 print Boxes
+
+choices = LpVariable.dicts("Choice",(students,colors,distances),0,1,LpInteger)
+prob += 0
+
+# A constraint ensuring that only one value can be in each square is created
+#this may not be necessary initially set to all possible solutions
+for student in students:
+    for color in colors:
+        for distance in distances:
+           prob += lpSum([choices[student][color][distance]]) == 0, ""
+
+#There can only be one true solution in each
+for student in students:
+    for color in colors:
+        for distance in distances:
+            if((student == "Henrietta") == (distance == "35")):
+                prob += choices[student][color][distance] == 1, ""
+            if((student == "Henrietta") == (color == "silver")):
+                prob += choices[student][color][distance] == 1, ""
+
+
+# for distance in distances:
+#     prob += choices["Henrietta"]["silver"][distance] == 3, ""
+
+prob.writeLP("planes.lp")
+
+# The problem is solved using PuLP's choice of Solver
+print len(prob.variables())
+prob.solve()
+print len(prob.variables())
+
+for student in students:
+    for color in colors:
+        for distance in distances:
+            if(value(choices[student][color][distance]) == 1):
+                print choices[student][color][distance]
