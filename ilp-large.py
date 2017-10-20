@@ -43,8 +43,12 @@ def problem2():
     #FIXME: hint s1
     # prob += boats["Daily Ray"] == locations["Rainbow Reef"] or captains["Romero"]
     #The vessel that went to Rainbow Reef saw fewer manatees than the WateryPete
-    prob += locations["Rainbow Reef"] <= boats["Watery Pete"] + 1 #Note program gets bitchy af when you don't use the <= instead of <
-    #The boat that
+    prob += locations["Rainbow Reef"] <= (boats["Watery Pete"] - 1) #Note program gets bitchy af when you don't use the <= instead of <
+    prob += boats["Watery Pete"] >= (locations["Rainbow Reef"] + 1)
+    #The boat that went to Rainbow Reef, Captain Yang's boat, and the Samantha are three different boats
+    prob += locations["Rainbow Reef"] != captains["Yang"]
+    prob += locations["Rainbow Reef"] != boats["Samantha"]
+    prob += boats["Samantha"] != captains["Yang"]
     print len(prob.variables())
 
     prob.solve()
