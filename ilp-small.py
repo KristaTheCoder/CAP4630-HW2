@@ -5,7 +5,7 @@ prob = pulp.LpProblem("test1", pulp.LpMinimize)
 #possible values are 1 impossible are 0
 students = ["Ella", "Henrietta", "Omar", "Valerie"]
 colors = ["black", "blue", "pink", "silver"]
-distances = ["15","25", "35", "45"]
+distances = [15,25, 35, 45]
 
 
 Boxes =[]
@@ -26,16 +26,19 @@ prob += 0
 for student in students:
     for color in colors:
         for distance in distances:
-           prob += lpSum([choices[student][color][distance]]) == 0, ""
+           prob += lpSum([choices[student][color][distance]]) == 1, ""
 
 #There can only be one true solution in each
 for student in students:
     for color in colors:
         for distance in distances:
-            if((student == "Henrietta") == (distance == "35")):
-                prob += choices[student][color][distance] == 1, ""
-            if((student == "Henrietta") == (color == "silver")):
-                prob += choices[student][color][distance] == 1, ""
+            #hint 1
+            if((student == "Henrietta") != (distance == 35)):
+                prob += choices[student][color][distance] == 0, ""
+            #hint 2
+            if((student == "Henrietta") != (color == "silver")):
+                prob += choices[student][color][distance] == 0, ""
+
 
 
 # for distance in distances:
