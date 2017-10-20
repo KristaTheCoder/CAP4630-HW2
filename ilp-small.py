@@ -30,12 +30,9 @@ def problem1():
 
     prob += students['Henrietta'] == distances[35]
     prob += students['Henrietta'] == colors['silver']
-    #clue 3
     prob += students['Omar'] >= colors['silver']+1
-    #clue 4 10 feet is translated to 1 in this model
     prob += students['Ella'] == colors['black']+1
     prob += colors['black'] == students['Ella']-1
-    #clue 5
     prob += colors['pink'] == colors['black']+1
 
     prob.solve()
