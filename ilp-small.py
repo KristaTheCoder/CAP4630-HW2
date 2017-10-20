@@ -1,58 +1,49 @@
 from pulp import *
 
-prob = pulp.LpProblem("test1", pulp.LpMinimize)
+'''
+Groups unique answer sets and prints results
+'''
+def group(num, prob):
+    print "Set: ",  num + 1, "  "
+    for var in prob.variables():
+        if value(var) == num:
+            print var
 
-#possible values are 1 impossible are 0
-students = ["Ella", "Henrietta", "Omar", "Valerie"]
-colors = ["black", "blue", "pink", "silver"]
-distances = [15,25, 35, 45]
+def problem1():
+    prob = LpProblem("problem1")
+    #Each variable belongs to 1 of 4 sets, hence 0 through 3
+    distances = LpVariable.dicts("distance", [15,25,35,45], 0,3, LpInteger)
+    students = LpVariable.dicts("student", ['Ella','Henrietta','Omar','Valerie'], 0,3, LpInteger)
+    colors = LpVariable.dicts("color", ['black','blue','pink','silver'], 0,3, LpInteger)
+    Vars = [distances, students, colors]
+    prob += lpSum(Vars)
 
+    #set one variable as identifier for an answer set
+    prob += distances[15] == 0
+    prob += distances[25] == 1
+    prob += distances[35] == 2
+    prob += distances[45] == 3
 
-Boxes =[]
-for student in students:
-    for color in colors:
-        for distance in distances:
-            #intialize coordinates of boxes in 3D array
-            Boxes += [[(student,color, distance)]]
+    #Ensures that each instance of each variable occurs exactly once
+    for var in Vars:
+        prob += lpSum(var) == 6
 
-# 3D array of all possible options
-print Boxes
+    prob += students['Henrietta'] == distances[35]
+    prob += students['Henrietta'] == colors['silver']
+    #clue 3
+    prob += students['Omar'] >= colors['silver']+1
+    #clue 4 10 feet is translated to 1 in this model
+    prob += students['Ella'] == colors['black']+1
+    prob += colors['black'] == students['Ella']-1
+    #clue 5
+    prob += colors['pink'] == colors['black']+1
 
-choices = LpVariable.dicts("Choice",(students,colors,distances),0,1,LpInteger)
-prob += 0
+    prob.solve()
+    for i in range(4):
+        group(i, prob)
 
-# A constraint ensuring that only one value can be in each square is created
-#this may not be necessary initially set to all possible solutions
-for student in students:
-    for color in colors:
-        for distance in distances:
-           prob += lpSum([choices[student][color][distance]]) == 1, ""
+def main():
+    problem1()
 
-#There can only be one true solution in each
-for student in students:
-    for color in colors:
-        for distance in distances:
-            #hint 1
-            if((student == "Henrietta") != (distance == 35)):
-                prob += choices[student][color][distance] == 0, ""
-            #hint 2
-            if((student == "Henrietta") != (color == "silver")):
-                prob += choices[student][color][distance] == 0, ""
-
-
-
-# for distance in distances:
-#     prob += choices["Henrietta"]["silver"][distance] == 3, ""
-
-prob.writeLP("planes.lp")
-
-# The problem is solved using PuLP's choice of Solver
-print len(prob.variables())
-prob.solve()
-print len(prob.variables())
-
-for student in students:
-    for color in colors:
-        for distance in distances:
-            if(value(choices[student][color][distance]) == 1):
-                print choices[student][color][distance]
+if (__name__ == "__main__"):
+    main()
